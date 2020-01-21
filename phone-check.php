@@ -1,10 +1,9 @@
 <?php
-// http://api.east.alcazarnetworks.com/api/2.2/lrn?key=1781ed04-7114-4721-964f-1c74a25b325b&tn=14846642800&extended=true&output=json
-$API_KEY = "1781ed04-7114-4721-964f-1c74a25b325b";
+$API_KEY = "";
 
 function checkPhone($phone_test)
 {
-    $url = 'http://api.east.alcazarnetworks.com/api/2.2/lrn?key=' . $GLOBALS['API_KEY'] . '&tn=' . $phone_test . '&extended=false&output=json';
+    $url = 'http://api.east.alcazarnetworks.com/api/2.2/lrn?key=' . $GLOBALS['API_KEY'] . '&tn=' . $phone_test . '&extended=true&output=json';
     // Get cURL resource
     $curl = curl_init();
     // Set some options - we are passing in a useragent too here
@@ -16,11 +15,14 @@ function checkPhone($phone_test)
     // Send the request & save response to $resp
     $get_data = curl_exec($curl);
     $response = json_decode($get_data, true);
-    // echo '<pre>', $response['LRN'], '</pre';
+    var_dump($response);
+?>
+    <br>
+<?php
     // Close request to clear up some resources
     curl_close($curl);
 
-    return $response['LRN'];
+    return $response;
 }
 
 // // Open the file. r for reading
@@ -39,7 +41,17 @@ if ($file) {
             $phone_response[] = $data;
         } else {
             // cheking numbers
-            $data[1] = checkPhone($data[0]);
+            $resp = checkPhone($data[0]);
+            $data[1] = $resp["LRN"];
+            $data[2] = $resp["SPID"];
+            $data[3] = $resp["OCN"];
+            $data[4] = $resp["LATA"];
+            $data[5] = $resp["CITY"];
+            $data[6] = $resp["STATE"];
+            $data[7] = $resp["JURISDICTION"];
+            $data[8] = $resp["LEC"];
+            $data[9] = $resp["LINETYPE"];
+            $data[10] = $resp["DNC"];
             $phone_response[] = $data;
         }
     }
