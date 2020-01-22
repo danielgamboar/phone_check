@@ -15,7 +15,7 @@ function checkPhone($phone_test)
     // Send the request & save response to $resp
     $get_data = curl_exec($curl);
     $response = json_decode($get_data, true);
-    var_dump($response);
+    echo '<pre>', var_dump($response), "</pre>";
 ?>
     <br>
 <?php
